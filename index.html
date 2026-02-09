@@ -799,6 +799,10 @@
         let services = JSON.parse(localStorage.getItem('services')) || defaultServices;
         let employees = JSON.parse(localStorage.getItem('employees')) || ['أحمد', 'محمد', 'عبدالله'];
         let fixedExpenses = JSON.parse(localStorage.getItem('fixedExpenses')) || [];
+        let users = JSON.parse(localStorage.getItem('users')) || [
+            { id: 1, username: 'admin', fullName: 'المدير', password: 'admin123', role: 'admin' },
+            { id: 2, username: 'accountant', fullName: 'المحاسب', password: 'acc123', role: 'accountant' }
+        ];
         let shopInfo = JSON.parse(localStorage.getItem('shopInfo_mustaqbal')) || { name: 'مكتبة المستقبل', phone: '', address: '', taxNumber: '' };
         let currentOrder = { customerId: null, customerName: '', items: [], discount: 0, notes: '' };
 
