@@ -701,7 +701,7 @@
 
     <script>
         // ============ Configuration ============
-        const DEFAULT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwJDO3pLTE-B3UAP39Njq5i6yJwRPrQySifD3Ta6KyCyioL5DZzYaeTLwfbMqZPOl5K5Q/exec';
+        const DEFAULT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyLrdkSr-JtZuLSl8yiGVUOMa1EalykkUy6wHHehFlesjVFRPi025hznyHOX9WafmUDnQ/exec';
         // Force update: Clear old URL and use new one
         localStorage.setItem('webAppUrl_mustaqbal', DEFAULT_WEB_APP_URL);
         let WEB_APP_URL = DEFAULT_WEB_APP_URL;
@@ -2118,12 +2118,17 @@
                 localStorage.setItem('users', JSON.stringify(users));
                 closeModal('addUserModal');
                 renderUsersTable();
-                showAlert('تم إضافة المستخدم: ' + fullName, 'success');
                 document.getElementById('modalUsername').value = '';
                 document.getElementById('modalUserFullName').value = '';
                 document.getElementById('modalUserPassword').value = '';
-                // Save to cloud in background
-                apiCall('saveUsers', { users: users }).catch(e => console.log('Cloud save error:', e));
+                // Save to cloud and wait for result
+                showAlert('جاري حفظ المستخدم في السحابة...', 'success');
+                const result = await apiCall('saveUsers', { users: users });
+                if (result && result.success) {
+                    showAlert('تم إضافة المستخدم وحفظه في Google Sheets: ' + fullName, 'success');
+                } else {
+                    showAlert('تم الحفظ محلياً لكن فشل الحفظ في السحابة: ' + (result ? result.error : 'خطأ غير معروف'), 'error');
+                }
             } catch (error) {
                 console.error('Error adding user:', error);
                 showAlert('خطأ: ' + error.message, 'error');
